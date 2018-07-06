@@ -1,0 +1,81 @@
+service: demo-affirmation-api
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs8.10
+  profile: serverless-admin
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+  create:
+    handler: affirmations/create.create
+    events:
+      - http:
+          path: affirmations
+          method: post
+          cors: true
+
+  list:
+    handler: affirmations/list.list
+    events:
+      - http:
+          path: affirmations
+          method: get
+          cors: true
+
+  get:
+    handler: affirmations/get.get
+    events:
+      - http:
+          path: affirmations/{id}
+          method: get
+          cors: true
+
+  update:
+    handler: affirmations/update.update
+    events:
+      - http:
+          path: affirmations/{id}
+          method: put
+          cors: true
+
+  delete:
+    handler: affirmations/delete.delete
+    events:
+      - http:
+          path: affirmations/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    AffirmationsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Delete
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
