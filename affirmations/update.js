@@ -31,7 +31,7 @@ module.exports.update = (event, context, callback) => {
       ':text': data.text,
       ':updatedAt': timestamp,
     },
-    UpdateExpression: 'SET #affirmation_text = :text, checked = :checked, updatedAt = :updatedAt',
+    UpdateExpression: 'SET #affirmation_text = :text, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 
@@ -48,8 +48,7 @@ module.exports.update = (event, context, callback) => {
       return;
     }
 
-    // create a response
-    const response = {
+      const response = {
       statusCode: 200,
       body: JSON.stringify(result.Attributes),
     };

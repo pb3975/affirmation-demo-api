@@ -1,14 +1,26 @@
 {
-  "name": "aws-node-rest-api-with-dynamodb",
+  "name": "affirmation-demo-api",
   "version": "1.0.0",
-  "description": "Serverless CRUD service exposing a REST HTTP interface",
+  "description": "Demo app for serverless demo",
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "serverless-webpack": "^5.1.5",
     "uuid": "^2.0.3"
   },
   "devDependencies": {
     "aws-sdk": "^2.269.1",
-    "node-fetch": "^2.1.2"
+    "jest": "^23.3.0",
+    "node-fetch": "^2.1.2",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-source-map-support": "^1.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "serverless-offline": "^3.20.3",
+    "serverless-webpack": "^5.1.0",
+    "webpack": "^4.2.0",
+    "webpack-node-externals": "^1.6.0"
   }
 }

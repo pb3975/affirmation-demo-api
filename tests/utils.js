@@ -1,39 +1,74 @@
+import fetch from 'node-fetch';
+import AWS from 'aws-sdk'; 
 
-const fetch = require('node-fetch');
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 const postData = (url = ``, data = {}) => {
-  // Default options are marked with *
     return fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, cors, *same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, same-origin, *omit
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        redirect: "follow",
+        referrer: "no-referrer",
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .catch(error => console.error(`Fetch Error =\n`, error));
+};
+
+const deleteData = (url = ``) => {
+    return fetch(url, {
+        method: "DELETE",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
             "Content-Type": "application/json; charset=utf-8",
-            // "Content-Type": "application/x-www-form-urlencoded",
         },
-        redirect: "follow", // manual, *follow, error
-        referrer: "no-referrer", // no-referrer, *client
-        body: JSON.stringify(data), // body data type must match "Content-Type" header
+        redirect: "follow",
+        referrer: "no-referrer"
+    })
+    .then(response => response.json())
+    .catch(error => console.error(`Fetch Error =\n`, error));
+};
+
+const updateRecord = (url = ``, data = {}) => {
+    return fetch(url, {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        redirect: "follow",
+        referrer: "no-referrer",
+        body: JSON.stringify(data),
     })
     .then(response => response.json()) // parses response to JSON
     .catch(error => console.error(`Fetch Error =\n`, error));
 };
 
-const clearTable = (tableName) => {
-  const AWS = require('aws-sdk'); 
-  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+// const clearTable = (tableName) => {
+//   dynamoDb.scan(tableName, (error, result) => {
+//     if (error) {
+//       console.error(error);
+//     }
+//     else {
+//       return (result.json());
+//     }
+//   })
+// }
 
-  dynamoDb.scan(tableName, (error, result) => {
-    if (error) {
-      console.error(error);
-    }
-    else {
-      return (result.json());
-    }
-  })
-}
+const insertRecord = (tableName, record) => {
+  const params = {TableName: tableName, Item: record};
+  dynamoDb.put(params)
+};
 
-module.exports = postData, clearTable;
+module.exports = postData, deleteData, insertRecord, updateRecord, clearTable;
 
 

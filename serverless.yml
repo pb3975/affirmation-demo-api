@@ -2,6 +2,14 @@ service: demo-affirmation-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
 provider:
   name: aws
   region: us-east-1
