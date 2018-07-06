@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import AWS from 'aws-sdk'; 
+AWS.config.update({region:'us-east-1'})
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -49,7 +50,7 @@ const updateRecord = (url = ``, data = {}) => {
         referrer: "no-referrer",
         body: JSON.stringify(data),
     })
-    .then(response => response.json()) // parses response to JSON
+    .then(response => response.json())
     .catch(error => console.error(`Fetch Error =\n`, error));
 };
 
@@ -66,9 +67,24 @@ const updateRecord = (url = ``, data = {}) => {
 
 const insertRecord = (tableName, record) => {
   const params = {TableName: tableName, Item: record};
-  dynamoDb.put(params)
+  dynamoDb.put(params, (err, res) => {
+      if (err) {
+          throw err;
+      }
+      return res
+  })
 };
 
-module.exports = postData, deleteData, insertRecord, updateRecord, clearTable;
+const deleteRecord = (tableName, recordId) => {
+    const params = {TableName: tableName, Key: {"id":recordId}};
+    dynamoDb.delete(params, (err, res) => {
+        if (err) {
+            throw err;
+        }
+        return res
+    })
+  };
+
+export { postData, deleteData, insertRecord, updateRecord, deleteRecord }
 
 
