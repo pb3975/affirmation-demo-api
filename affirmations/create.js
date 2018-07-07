@@ -36,7 +36,6 @@ module.exports.create = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         body: 'Couldn\'t create the affirmation item.',
       });
-      console.log('test');
       return;
     }
 
