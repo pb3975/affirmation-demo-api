@@ -48,22 +48,12 @@ const updateRecord = (url = ``, data = {}) => {
         },
         redirect: "follow",
         referrer: "no-referrer",
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .catch(error => console.error(`Fetch Error =\n`, error));
 };
 
-// const clearTable = (tableName) => {
-//   dynamoDb.scan(tableName, (error, result) => {
-//     if (error) {
-//       console.error(error);
-//     }
-//     else {
-//       return (result.json());
-//     }
-//   })
-// }
 
 const insertRecord = (tableName, record) => {
   const params = {TableName: tableName, Item: record};

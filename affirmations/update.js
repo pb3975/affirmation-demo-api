@@ -9,7 +9,7 @@ module.exports.update = (event, context, callback) => {
   const data = JSON.parse(event.body);
 
   // validation
-  if (typeof data.text !== 'string' || typeof data.checked !== 'boolean') {
+  if (typeof data.text !== 'string') {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
