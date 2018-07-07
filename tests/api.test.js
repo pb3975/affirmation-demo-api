@@ -64,7 +64,6 @@ describe('Get list of affirmations affirmation route', () => {
     insertRecord(table, obj)
     return fetch(`https://dktowbxizc.execute-api.us-east-1.amazonaws.com/test/affirmations`)
     .then(data => {
-      console.log(data)
       expect(typeof data).toBe('object')
       expect(data.status).toEqual(200)
       deleteRecord(table, obj.id)
