@@ -12,9 +12,7 @@ module.exports.get = (event, context, callback) => {
     },
   };
 
-  // fetch affirmation from the database
   dynamoDb.get(params, (error, result) => {
-    // handle potential errors
     if (error) {
       console.error(error);
       callback(null, {
